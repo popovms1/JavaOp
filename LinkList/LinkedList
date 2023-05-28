@@ -1,0 +1,114 @@
+public class LinkedList<T> implements List<T> {
+    private Node<T> head;
+
+    public LinkedList() {
+        this.head = null;
+    }
+
+    @Override
+    public void add(T data) {
+        Node<T> newNode = new Node<>(data);
+
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node<T> currNode = head;
+            while (currNode.next != null) {
+                currNode = currNode.next;
+            }
+            currNode.next = newNode;
+        }
+    }
+
+    @Override
+    public void remove(T data) {
+        if (head == null) {
+            return;
+        }
+
+        if (head.data.equals(data)) {
+            head = head.next;
+            return;
+        }
+
+        Node<T> prevNode = head;
+        Node<T> currNode = head.next;
+
+        while (currNode != null && !currNode.data.equals(data)) {
+            prevNode = currNode;
+            currNode = currNode.next;
+        }
+
+        if (currNode != null) {
+            prevNode.next = currNode.next;
+        }
+    }
+
+    @Override
+    public void removeAt(int index) {
+        if (head == null) {
+            return;
+        }
+
+        if (index == 0) {
+            head = head.next;
+            return;
+        }
+
+        Node<T> prevNode = head;
+        Node<T> currNode = head.next;
+        int currIndex = 1;
+
+        while (currNode != null && currIndex != index) {
+            prevNode = currNode;
+            currNode = currNode.next;
+            currIndex++;
+        }
+
+        if (currNode != null) {
+            prevNode.next = currNode.next;
+        }
+    }
+
+    @Override
+    public void printList() {
+        Node<T> currNode = head;
+
+        while (currNode != null) {
+            System.out.print(currNode.data + " ");
+            currNode = currNode.next;
+        }
+
+        System.out.println();
+    }
+
+    @Override
+    public T get(int index) {
+        Node<T> currNode = head;
+        int currIndex = 0;
+
+        while (currNode != null && currIndex != index) {
+            currNode = currNode.next;
+            currIndex++;
+        }
+
+        if (currNode == null) {
+            return null;
+        } else {
+            return currNode.data;
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Node<T> currNode = head;
+
+        while (currNode != null) {
+            sb.append(currNode.data).append(" ");
+            currNode = currNode.next;
+        }
+
+        return sb.toString();
+    }
+}
