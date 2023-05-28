@@ -1,0 +1,13 @@
+public interface List<T> {
+    void add(T data);
+
+    void remove(T data);
+
+    void removeAt(int index);
+
+    void printList();
+
+    T get(int index);
+
+    String toString();
+}
