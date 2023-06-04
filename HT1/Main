@@ -1,0 +1,23 @@
+public class Main {
+    public static void main(String[] args) {
+        HashTable hashtable = new HashTable(16);
+
+        hashtable.put(1, "Хеш - таблица");
+        hashtable.put(4, "Готова");
+        hashtable.put(12, "Надеюсь");
+
+        // Получение значения по ключу
+        String value1 = hashtable.get(1);
+        String value2 = hashtable.get(4);
+        String value3 = hashtable.get(12);
+
+        System.out.println(value1);
+        System.out.println(value2);
+        System.out.println(value3);
+
+        hashtable.delete(2);
+
+        String removedValue = hashtable.get(2);
+        System.out.println(removedValue);
+    }
+}
