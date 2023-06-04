@@ -1,0 +1,83 @@
+import java.util.ArrayList;
+
+class HashTable {
+    private static final double LOAD_FACTOR_THRESHOLD = 0.75; // Пороговое значение загруженности хеш-таблицы
+    private ArrayList<DataItem>[] table;
+    private int size;
+
+    public HashTable(int size) {
+        this.size = size;
+        table = new ArrayList[size];
+        for (int i = 0; i < size; i++) {
+            table[i] = new ArrayList<>();
+        }
+    }
+
+    private int hashFunc(int key) {
+        return key % size;
+    } // Хеш-функция
+
+    public void put(int key, String value) {
+        int hash = hashFunc(key);
+        ArrayList<DataItem> chain = table[hash];
+        for (DataItem item : chain) {
+            if (item.getKey() == key) {
+                item.setValue(value);
+                return;
+            }
+        }
+        DataItem newItem = new DataItem(key, value);
+        chain.add(newItem);
+        double loadFactor = (double) countItems() / size;
+        if (loadFactor > LOAD_FACTOR_THRESHOLD) {
+            resize();
+        }
+    }
+
+    public String get(int key) {
+        int hash = hashFunc(key);
+        ArrayList<DataItem> chain = table[hash];
+        for (DataItem item : chain) {
+            if (item.getKey() == key) {
+                return item.getValue();
+            }
+        }
+        return null;
+    }
+
+    public void delete(int key) {
+        int hash = hashFunc(key);
+        ArrayList<DataItem> chain = table[hash];
+        for (DataItem item : chain) {
+            if (item.getKey() == key) {
+                chain.remove(item);
+                return;
+            }
+        }
+    }
+
+    private void resize() {
+        int newSize = size * 2;
+        ArrayList<DataItem>[] newTable = new ArrayList[newSize];
+        for (int i = 0; i < newSize; i++) {
+            newTable[i] = new ArrayList<>();
+        }
+        for (ArrayList<DataItem> chain : table) {
+            for (DataItem item : chain) {
+                int newHash = hashFunc(item.getKey()) % newSize;
+                ArrayList<DataItem> newChain = newTable[newHash];
+                newChain.add(item);
+            }
+        }
+        table = newTable;
+        size = newSize;
+    }
+
+    private int countItems() {
+        int count = 0;
+        for (ArrayList<DataItem> chain : table) {
+            count += chain.size();
+        }
+        return count;
+    }
+}
